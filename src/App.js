@@ -3,6 +3,8 @@ import {Container, Row, ListGroup, Button} from 'react-bootstrap'
 
 export default App => {
     
+    let [currentKeyDown, setCurrentKeyDown] = useState('');
+
     //Each index corresponds to a pad on DRUM_PADS
     const DRUM_PADS_AUDIO = [
           "https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3",
@@ -27,7 +29,7 @@ export default App => {
     const DRUM_PADS = ['Q', 'W', 'E', 'A', 'S', 'D', 'Z', 'X', 'C']
 
     let generateDrumPads = () => {
-        let test = DRUM_PADS.map(pad => {
+        return DRUM_PADS.map(pad => {
             let key = "padKey_" + pad;
             return (
                 <ListGroup.Item key={key}>
@@ -39,10 +41,31 @@ export default App => {
                 </ListGroup.Item>
             )
         });
-
-        return test;
     }
 
+    let keyDownHandler = (keyInfo) => {
+        //console.log(keyInfo.key.toUpperCase());
+        
+        let keyInfoPad = keyInfo.key.toUpperCase();
+
+        switch(DRUM_PADS.some((pad) => {
+            //console.log(pad);
+            //console.log(keyInfo.key.toUpperCase());
+            
+            return pad === keyInfoPad;
+        })){
+            case true:
+                document.getElementById(keyInfoPad).play();
+                setCurrentKeyDown(keyInfoPad);
+                
+        }
+
+    }
+
+    useEffect(() => {
+        document.addEventListener("keydown", keyDownHandler)
+        
+    });
 
     return (
         <Container id="display" fluid>
@@ -53,6 +76,9 @@ export default App => {
                 <ListGroup>
                     {generateDrumPads()}
                 </ListGroup>
+            </Row>
+            <Row className="text-center">
+                <h4>Pad Hit: {currentKeyDown}</h4>
             </Row>
         </Container>
       );
