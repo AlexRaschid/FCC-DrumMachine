@@ -33,8 +33,12 @@ export default App => {
             let key = "padKey_" + pad;
             return (
                 <ListGroup.Item key={key}>
-                                                                        {/*This onClick bullsh- was so annoying to figure out why it wouldnt work at first */}
-                    <Button id="key" className="drum-pad" onClick={() => {document.getElementById(pad).play()}}>
+                        {/*This onClick bullsh- was so annoying to figure out why it wouldnt work at first */}
+                        <Button id="key" className="drum-pad" 
+                            onClick={() => {
+                                setCurrentKeyDown(pad);
+                                document.getElementById(pad).play()
+                        }}>
                         {pad}
                         <audio src={DRUM_PADS_AUDIO[DRUM_PADS.indexOf(pad)]} className="clip" id={pad}></audio>
                     </Button>
